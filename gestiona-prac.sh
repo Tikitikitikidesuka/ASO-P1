@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CRON_SCRIPT="$(dirname $(realpath $0))/recoge-prac.sh)"
-CRON_JOB="* * * * * $CRON_SCRIPT"
+CRON_JOB="0 8 * * * $CRON_SCRIPT"
 
 log () {
 	echo "$(date '+%Y-%m-%d %H:%M:%S') - Gestiona prac: $1" >> "$(dirname $(realpath $0))/informe-pract.log"
