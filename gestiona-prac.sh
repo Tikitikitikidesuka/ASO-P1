@@ -1,7 +1,10 @@
 #!/bin/bash
 
+CRON_SCRIPT="$(dirname $0)/recoge-prac.sh)"
+CRON_JOB="* * * * * $CRON_SCRIPT"
+
 log () {
-	echo "Gestiona prac: $1" >> informe-pract.log
+	echo "$(date '+%Y-%m-%d %H:%M:%S') - Gestiona prac: $1" >> "$(dirname $0)/informe-pract.log"
 }
 
 print_bienvenida() {
@@ -35,9 +38,19 @@ run_opcion_1 () {
 		read -p "Está de acuerdo (s/n)? " confirmado
 	done
 
-	if [ "$confirmado" == "s" ]
+	if [ "$confirmado" = "s" ]
 	then
 		log "Opción 1: Seleccionado asignatura=$asignatura, origen=$origen, destino=$destino"
+		
+		if crontab -l 2> /dev/null | grep -q "$CRON_SCRIPT"
+		then
+			echo "\nLa recogida ya estaba programada"
+			log "Opcion 1: Recogida previamente programada"
+		else
+			full_cron_job="$CRON_JOB $(realpath $origen) $(realpath $destino)"
+			(crontab -l 2> /dev/null; echo "$full_cron_job") | crontab -
+			log "Opcion 1: Recogida programada ($full_cron_job)"
+		fi
 	else
 		log "Opción 1: Cancelada"
 		echo "Operación cancelada"
