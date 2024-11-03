@@ -54,7 +54,7 @@ run_opcion_1 () {
 		fi
 	else
 		log "Opción 1: Cancelada"
-		echo "Operación cancelada"
+		echo -e "\nOperación cancelada"
 	fi
 }
 
@@ -67,12 +67,12 @@ run_opcion_3 () {
 }
 
 run_opcion_4() {
-	echo "33"
+	log "Opción 4: Petición de finalización"
 }
 
 
 log "Iniciando ejecución"
-trap 'log "Finalizando programa"' EXIT
+trap 'log "Finalizando ejecución"' EXIT
 
 print_bienvenida
 echo
