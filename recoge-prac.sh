@@ -5,7 +5,7 @@
 # 2) directorio destino
 
 log () {
-	echo "$(date '+%Y-%m-%d %H:%M:%S') - Recoge prac: $1" >> "$(dirname $0)/informe-pract.log"
+	echo "$(date '+%Y-%m-%d %H:%M:%S') - Recoge prac: $1" >> "$(dirname $(realpath $0))/informe-pract.log"
 }
 
 log "Iniciando ejecución"
