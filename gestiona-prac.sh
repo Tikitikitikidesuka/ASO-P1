@@ -1,7 +1,7 @@
 #!/bin/bash
 
 log () {
-	echo "$1" >> informe-pract.log
+	echo "Gestiona prac: $1" >> informe-pract.log
 }
 
 print_bienvenida() {
@@ -35,10 +35,11 @@ run_opcion_1 () {
 		read -p "Está de acuerdo (s/n)? " confirmado
 	done
 
-	if [ "$confirmado" != "s" ]
+	if [ "$confirmado" == "s" ]
 	then
 		log "Opción 1: Seleccionado asignatura=$asignatura, origen=$origen, destino=$destino"
 	else
+		log "Opción 1: Cancelada"
 		echo "Operación cancelada"
 	fi
 }
@@ -51,9 +52,14 @@ run_opcion_3 () {
 	echo "keo"
 }
 
-trap 'log "Finalizando programa"' EXIT
+run_opcion_4() {
+	echo "33"
+}
+
 
 log "Iniciando ejecución"
+trap 'log "Finalizando programa"' EXIT
+
 print_bienvenida
 echo
 
@@ -70,7 +76,7 @@ do
 		1) log "Opción 1 seleccionada"; run_opcion_1; echo;;
 		2) log "Opción 2 seleccionada"; run_opcion_2; echo;;
 		3) log "Opción 3 seleccionada"; run_opcion_3; echo;;
-		4) log "Opción 4 seleccionada";;
+		4) log "Opción 4 seleccionada"; run_opcion_4; echo;;
 		*) echo -e "Opción inválida\n"; log "Opción inválida \"$opcion\" seleccionada";;
 	esac
 done
