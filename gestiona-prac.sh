@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CRON_SCRIPT="$(dirname $(realpath $0))/recoge-prac.sh)"
+CRON_SCRIPT="$(dirname $(realpath $0))/recoge-prac.sh"
 CRON_JOB="0 8 * * * $CRON_SCRIPT"
 
 log () {
@@ -48,7 +48,7 @@ run_opcion_1 () {
 			echo -e "\nLa recogida ya estaba programada"
 		else
 			full_cron_job="$CRON_JOB $(realpath $origen) $(realpath $destino)"
-			(crontab -l 2> /dev/null; echo "$full_cron_job") | crontab -
+			(crontab -l 2> /dev/null; echo "$full_cron_job") | crontab - 2> /dev/null
 			log "Opción 1: Recogida programada con éxito ($full_cron_job)"
 			echo -e "\nRecogida programada con éxito"
 		fi
@@ -75,7 +75,7 @@ run_opcion_2 () {
 	then
 		log "Opción 2: Seleccionado asignatura=\"$asignatura\", directorio=\"$prac_dir\""
 
-		prac_dir="$(realpath $prac_dir)"
+		prac_dir=$(realpath "$prac_dir")
 		if [ -d "$prac_dir" ]
 		then
 			pck_name="$asignatura-$(date +'%y%m%d').tgz"
@@ -96,7 +96,30 @@ run_opcion_2 () {
 }
 
 run_opcion_3 () {
-	echo "keo"
+	echo -e "\nMenú 3 – Obtener tamaño y fecha del fichero\n"
+	read -p "Asignatura sobre la que queremos información: " asignatura
+	read -p "Ruta absoluta del directorio de prácticas: " prac_dir
+	
+	log "Opción 3: Seleccionado asignatura=\"$asignatura\", directorio=\"$prac_dir\""
+
+	prac_dir=$(realpath "$prac_dir")
+	if [ -d "$prac_dir" ]
+	then
+		pck_file=$(ls "$prac_dir/$asignatura"-*.tgz | sort -dr | head -n 1)
+		if [ -f "$pck_file" ]
+		then
+			# Some machines do not have '-b' option for bytes
+			byte_size=$(du -b "$pck_file" | cut -f1)
+			log "Opción 3: Obtenido tamaño del fichero empaquetado de prácticas \"$pck_file\". Ocupa $byte_size bytes"
+			echo -e "\nEl fichero generado es $(basename $pck_file) y ocupa $byte_size bytes."
+		else
+			log "Opción 3: No existe fichero empaquetado de prácticas en el directorio $prac_dir"
+			echo -e "\nNo existe un fichero empaquetado de prácticas"
+		fi
+	else
+		log "Opción 3: El directorio de prácticas \"$prac_dir\" no existe"
+		echo -e "\nEl directorio de prácticas \"$prac_dir\" no existe"
+	fi
 }
 
 run_opcion_4() {
