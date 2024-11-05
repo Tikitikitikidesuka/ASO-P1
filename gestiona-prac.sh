@@ -81,7 +81,7 @@ run_opcion_2 () {
 			pck_name="$asignatura-$(date +'%y%m%d').tgz"
 			( # Tar will keep directory structure so cd is necessary
 				cd "$prac_dir"
-				tar -czf "$pck_name" ./*.sh 2> /dev/null
+				tar -czf "$pck_name" *.sh 2> /dev/null
 			) # The above two lines execute in their own shell
 			log "Opción 2: Practicas del directorio \"$prac_dir\" empaquetadas al fichero \"$prac_dir/$pck_name\""
 			echo -e "\nPracticas empaquetadas con éxito al fichero $pck_name"
