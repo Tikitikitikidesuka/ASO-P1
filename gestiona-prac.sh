@@ -40,16 +40,16 @@ run_opcion_1 () {
 
 	if [ "$confirmado" = "s" ]
 	then
-		log "Opción 1: Seleccionado asignatura=$asignatura, origen=$origen, destino=$destino"
+		log "Opción 1: Seleccionado asignatura=\"$asignatura\", origen=\"$origen\", destino=\"$destino\""
 		
 		if crontab -l 2> /dev/null | grep -q "$CRON_SCRIPT"
 		then
-			log "Opcion 1: Recogida previamente programada"
+			log "Opción 1: Recogida previamente programada"
 			echo -e "\nLa recogida ya estaba programada"
 		else
 			full_cron_job="$CRON_JOB $(realpath $origen) $(realpath $destino)"
 			(crontab -l 2> /dev/null; echo "$full_cron_job") | crontab -
-			log "Opcion 1: Recogida programada con éxito ($full_cron_job)"
+			log "Opción 1: Recogida programada con éxito ($full_cron_job)"
 			echo -e "\nRecogida programada con éxito"
 		fi
 	else
@@ -59,7 +59,40 @@ run_opcion_1 () {
 }
 
 run_opcion_2 () {
-	echo "jajsas"
+	echo -e "\nMenú 2 – Empaquetar prácticas de la asignatura\n"
+	read -p "Asignatura cuyas prácticas se desea empaquetar: " asignatura
+	read -p "Ruta absoluta del directorio de prácticas: " prac_dir
+
+	echo -e "\nSe van a empaquetar las prácticas de la asignatura $asignatura presentes en el directorio $prac_dir.\n"
+
+	confirmado=""
+	while [ "$confirmado" != "s" -a "$confirmado" != "n" ]
+	do
+		read -p "Está de acuerdo (s/n)? " confirmado
+	done
+	
+	if [ "$confirmado" = "s" ]
+	then
+		log "Opción 2: Seleccionado asignatura=\"$asignatura\", directorio=\"$prac_dir\""
+
+		prac_dir="$(realpath $prac_dir)"
+		if [ -d "$prac_dir" ]
+		then
+			pck_name="$asignatura-$(date +'%y%m%d').tgz"
+			( # Tar will keep directory structure so cd is necessary
+				cd "$prac_dir"
+				tar -czf "$pck_name" ./*.sh 2> /dev/null
+			) # The above two lines execute in their own shell
+			log "Opción 2: Practicas del directorio \"$prac_dir\" empaquetadas al fichero \"$prac_dir/$pck_name\""
+			echo -e "\nPracticas empaquetadas con éxito al fichero $pck_name"
+		else
+			log "Opción 2: El directorio de prácticas \"$prac_dir\" no existe"
+			echo -e "\nEl directorio de prácticas \"$prac_dir\" no existe"
+		fi
+	else
+		log "Opción 2: Cancelada"
+		echo -e "\nOperación cancelada"
+	fi
 }
 
 run_opcion_3 () {

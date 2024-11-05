@@ -23,15 +23,15 @@ fi
 
 if [ ! -d "$src_dir" ]
 then
-	echo "El directorio origen \"$src_dir\" no existe"
 	log "El directorio origen \"$src_dir\" no existe"
+	echo "El directorio origen \"$src_dir\" no existe"
 	exit 1
 fi
 
 if [ ! -d "$dest_dir" ]
 then
-	echo "El directorio destino \"$dest_dir\" no existe"
 	log "El directorio destino \"$dest_dir\" no existe"
+	echo "El directorio destino \"$dest_dir\" no existe"
 	exit 1
 fi
 
