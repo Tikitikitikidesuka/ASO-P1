@@ -24,7 +24,7 @@ print_menu () {
 }
 
 
-run_opcion_1 () {
+programar_recogida () {
 	echo -e "\nMenú 1 – Programar recogida de prácticas\n"
 	read -p "Asignatura cuyas prácticas desea recoger: " asignatura
 	read -p "Ruta con las cuentas de los alumnos: " origen
@@ -58,7 +58,7 @@ run_opcion_1 () {
 	fi
 }
 
-run_opcion_2 () {
+empaquetar () {
 	echo -e "\nMenú 2 – Empaquetar prácticas de la asignatura\n"
 	read -p "Asignatura cuyas prácticas se desea empaquetar: " asignatura
 	read -p "Ruta absoluta del directorio de prácticas: " prac_dir
@@ -95,7 +95,7 @@ run_opcion_2 () {
 	fi
 }
 
-run_opcion_3 () {
+obtener_datos () {
 	echo -e "\nMenú 3 – Obtener tamaño y fecha del fichero\n"
 	read -p "Asignatura sobre la que queremos información: " asignatura
 	read -p "Ruta absoluta del directorio de prácticas: " prac_dir
@@ -122,7 +122,7 @@ run_opcion_3 () {
 	fi
 }
 
-run_opcion_4() {
+salir() {
 	log "Opción 4: Petición de finalización"
 }
 
@@ -143,10 +143,10 @@ do
 	read -p "Opción: " opcion
 
 	case $opcion in
-		1) log "Opción 1 seleccionada"; run_opcion_1; echo;;
-		2) log "Opción 2 seleccionada"; run_opcion_2; echo;;
-		3) log "Opción 3 seleccionada"; run_opcion_3; echo;;
-		4) log "Opción 4 seleccionada"; run_opcion_4; echo;;
+		1) log "Opción 1 seleccionada"; programar_recogida; echo;;
+		2) log "Opción 2 seleccionada"; empaquetar; echo;;
+		3) log "Opción 3 seleccionada"; obtener_datos; echo;;
+		4) log "Opción 4 seleccionada"; salir; echo;;
 		*) echo -e "Opción inválida\n"; log "Opción inválida \"$opcion\" seleccionada";;
 	esac
 done
